@@ -1,0 +1,8 @@
+# Environment specific files
+config
+
+# Node
+node_modules
+
+# Temporary files.
+*~
