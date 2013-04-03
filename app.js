@@ -14,7 +14,7 @@ var express = require('express')
 var app = express();
 
 app.configure(function(){
-  app.set('port', process.env.PORT || 3000);
+  app.set('port', config.Express.port || 3000);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(express.favicon());
@@ -32,6 +32,9 @@ app.configure('development', function(){
 });
 
 app.get('/', routes.index);
+app.get('/login', function(req, res){
+  res.render('login.jade', {title: 'login'});
+});
 app.get('/auth', auth.auth);
 app.get('/users', user.list);
 
