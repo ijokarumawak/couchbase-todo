@@ -3,13 +3,14 @@
  * Module dependencies.
  */
 
-var express = require('express')
-  , routes = require('./routes')
-  , user = require('./routes/user')
-  , auth = require('./routes/auth')
-  , http = require('http')
-  , path = require('path')
-  , config = require('config');
+var express = require('express'),
+  routes = require('./routes'),
+  user = require('./routes/user'),
+  auth = require('./routes/auth'),
+  tasks = require('./routes/tasks');
+  http = require('http'),
+  path = require('path'),
+  config = require('config');
 
 var app = express();
 
@@ -37,6 +38,10 @@ app.get('/login', function(req, res){
 });
 app.get('/auth', auth.auth);
 app.get('/users', user.list);
+app.get('/add-task', function(req, res){
+  res.render('add-task.jade', {title: 'add task'});
+});
+app.post('/tasks', tasks.post);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

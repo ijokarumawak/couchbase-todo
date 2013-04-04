@@ -10,6 +10,7 @@
     "jade": "*",
     "google-calendar": "*",
     "config": "*",
-    "yaml": "*"
+    "yaml": "*",
+    "couchbase": "*"
   }
 }

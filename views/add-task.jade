@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  form(method="post", action="/tasks")
+    div
+      label(for="subject") Subject:
+      input(type="text", name="subject")
+    div
+      label(for="desc") Description:
+      input(type="text", name="desc")
+    div
+      label(for="startDate") Start date:
+      input(type="text", name="startDate")
+    div
+      label(for="endDate") End date:
+      input(type="text", name="endDate")
+    div
+      button(class="btn btn-large btn-primary", type="submit") Add
