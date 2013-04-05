@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  form(method="post", action="/projects")
+    div
+      label(for="id") ID:
+      input(type="text", name="id")
+    div
+      label(for="name") Name:
+      input(type="text", name="name")
+    div
+      label(for="desc") Description:
+      input(type="text", name="desc")
+    div
+      label(for="body") Body:
+      textarea(name="body", cols=80, rows=10)
+    div
+      button(class="btn btn-primary", type="submit") Submit
+      a(class="btn", href="javascript:history.back()") Cancel

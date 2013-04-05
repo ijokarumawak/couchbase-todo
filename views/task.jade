@@ -1,18 +1,18 @@
 extends logged-in
 
 block content
-  a(class="btn btn-large btn-primary", href="/edit-task/" + id) Edit Task
+  a(class="btn btn-primary", href="/edit-task/" + id) Edit Task
   div
-    p Subject:
-    p= task.subject
+    span Subject:
+    span= task.subject
   div
-    p Description:
-    p= task.desk
+    span Description:
+    span= task.desc
   div
     span Start Date:
     span= task.startDate
     span End Date:
     span= task.endDate
   div
-    p Body:
-    != marked(task.body)
+    if task.body
+      != marked(task.body)

@@ -1,0 +1,16 @@
+extends logged-in
+
+block content
+  a(class="btn btn-primary", href="/edit-project/" + id) Edit project
+  div
+    span ID:
+    span= id
+  div
+    span Name:
+    span= project.name
+  div
+    span Description:
+    span= project.desc
+  div
+    if project.body
+      != marked(project.body)

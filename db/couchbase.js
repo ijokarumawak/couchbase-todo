@@ -20,12 +20,25 @@ DataHandler.prototype.publishUID = function(callback) {
   });
 };
 
+DataHandler.prototype.add = function(id, data, callback) {
+  this.cb.add(id.toString(), data, callback);
+};
+
 DataHandler.prototype.save = function(id, data, callback) {
   this.cb.set(id.toString(), data, callback);
 };
 
 DataHandler.prototype.findByID = function(id, callback) {
-  this.cb.get(id.toString(), callback);
+  this.cb.get(id.toString(), function(err, doc){
+    if(err) {
+      if(err.code == 13) {
+        console.log('document was not found: ' + id);
+        callback(null, null);
+      }
+      else callback(err, null);
+    }
+    else callback(null, doc);
+  });
 }
 
 exports.DataHandler = DataHandler;

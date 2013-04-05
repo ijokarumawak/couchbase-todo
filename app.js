@@ -8,6 +8,7 @@ var express = require('express'),
   user = require('./routes/user'),
   auth = require('./routes/auth'),
   tasks = require('./routes/tasks');
+  projects = require('./routes/projects');
   http = require('http'),
   path = require('path'),
   config = require('config');
@@ -38,11 +39,20 @@ app.get('/login', function(req, res){
 });
 app.get('/auth', auth.auth);
 app.get('/users', user.list);
-app.get('/add-task', tasks.addTask);
+
+// tasks
+app.get('/add-task', tasks.add);
 app.post('/tasks', tasks.post);
 app.get('/tasks/:id', tasks.get);
-app.get('/edit-task/:id', tasks.editTask);
+app.get('/edit-task/:id', tasks.edit);
 app.post('/tasks/:id', tasks.put);
+
+// projects
+app.get('/add-project', projects.add);
+app.post('/projects', projects.post);
+app.get('/projects/:id', projects.get);
+app.get('/edit-project/:id', projects.edit);
+app.post('/projects/:id', projects.put);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
