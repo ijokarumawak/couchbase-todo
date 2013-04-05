@@ -11,6 +11,7 @@
     "google-calendar": "*",
     "config": "*",
     "yaml": "*",
-    "couchbase": "*"
+    "couchbase": "*",
+    "marked": "*"
   }
 }

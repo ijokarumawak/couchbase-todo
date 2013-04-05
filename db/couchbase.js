@@ -24,4 +24,8 @@ DataHandler.prototype.save = function(id, data, callback) {
   this.cb.set(id.toString(), data, callback);
 };
 
+DataHandler.prototype.findByID = function(id, callback) {
+  this.cb.get(id.toString(), callback);
+}
+
 exports.DataHandler = DataHandler;

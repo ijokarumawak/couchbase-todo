@@ -1,0 +1,18 @@
+extends logged-in
+
+block content
+  a(class="btn btn-large btn-primary", href="/edit-task/" + id) Edit Task
+  div
+    p Subject:
+    p= task.subject
+  div
+    p Description:
+    p= task.desk
+  div
+    span Start Date:
+    span= task.startDate
+    span End Date:
+    span= task.endDate
+  div
+    p Body:
+    != marked(task.body)
