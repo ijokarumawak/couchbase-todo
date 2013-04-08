@@ -41,4 +41,22 @@ DataHandler.prototype.findByID = function(id, callback) {
   });
 }
 
+DataHandler.prototype.findProjects = function(callback) {
+  var q = {"key": "project"};
+  this.cb.view('dev_all', 'type', q, function(err, res){
+    if(err){
+      callback(err);
+      return;
+    }
+    var projects = new Array();
+    for(var i = 0; i < res.length; i++){
+      projects[i] = {
+        id: res[i].id,
+        name: res[i].value
+      };
+    }
+    callback(null, projects);
+  });
+}
+
 exports.DataHandler = DataHandler;

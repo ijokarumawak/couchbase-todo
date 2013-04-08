@@ -23,7 +23,9 @@ function checkProject(projectID, callback) {
 }
 
 exports.add = function(req, res){
-  res.render('add-task.jade', {title: 'add task'});
+  res.render('add-task.jade', {
+    title: 'add task', project: req.param('project')
+  });
 };
 
 exports.edit = function(req, res){

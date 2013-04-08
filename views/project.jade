@@ -1,6 +1,7 @@
 extends logged-in
 
 block content
+  a(class="btn btn-primary", href="/add-task?project=" + id) Add Task to this project
   a(class="btn btn-primary", href="/edit-project/" + id) Edit project
   div
     span ID:
