@@ -54,8 +54,11 @@ exports.get = function(req, res){
   db.findByID(id, function(err, project){
     if(rc.isErr(err, res)
        || rc.isNotFound(id, project, res)) return;
-    res.render('project.jade', {
-      title: 'project:' + id, marked: marked, id: id, project: project
+    db.findTasksByProject(id, function(err, tasks){
+      res.render('project.jade', {
+        title: 'project:' + id, marked: marked,
+        id: id, project: project, tasks: tasks
+      });
     });
   });
 }

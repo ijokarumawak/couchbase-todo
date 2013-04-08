@@ -14,3 +14,13 @@ block content
   div
     if project.body
       != marked(project.body)
+  div
+    table
+      tr
+        th ID
+        th Subject
+      - each task in tasks
+        tr
+          td
+            a(href="/tasks/" + task.id)= task.id
+          td= task.subject
