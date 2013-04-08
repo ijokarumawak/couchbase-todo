@@ -7,10 +7,10 @@ block content
       input(type="text", name="project", value=project)
     div
       label(for="subject") Subject:
-      input(type="text", name="subject")
+      input(type="text", name="subject", class="input-xxlarge")
     div
       label(for="desc") Description:
-      input(type="text", name="desc")
+      input(type="text", name="desc", class="input-xxlarge")
     div
       label(for="startDate") Start date:
       input(type="text", name="startDate")
@@ -19,7 +19,7 @@ block content
       input(type="text", name="endDate")
     div
       label(for="body") Body:
-      textarea(name="body", cols=80, rows=10)
+      textarea(name="body", class="input-xxlarge")
     div
       button(class="btn btn-primary", type="submit") Submit
       a(class="btn", href="javascript:history.back()") Cancel

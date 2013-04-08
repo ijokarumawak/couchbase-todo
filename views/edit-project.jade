@@ -10,10 +10,10 @@ block content
       input(type="text", name="name", value=project.name)
     div
       label(for="desc") Description:
-      input(type="text", name="desc", value=project.desc)
+      input(type="text", name="desc", value=project.desc, class="input-xxlarge")
     div
       label(for="body") Body:
-      textarea(name="body", cols=80, rows=10)!= project.body
+      textarea(name="body", class="input-xxlarge")!= project.body
     div
       button(class="btn btn-primary", type="submit") Submit
       a(class="btn", href="javascript:history.back()") Cancel
