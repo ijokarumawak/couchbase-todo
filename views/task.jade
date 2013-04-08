@@ -1,13 +1,15 @@
 extends logged-in
 
 block content
-  a(class="btn btn-primary", href="/edit-task/" + id) Edit Task
-  div
-    a(href="/projects/" + task.project)= task.project
-    h2= task.subject
-  div
-    span Description:
-    span= task.desc
+  div(class='page-header')
+    h1= task.subject
+      small= ' ' + task.desc
+    ul(class='breadcrumb')
+      li
+        a(href="/projects/" + task.project)= task.project
+        span(class='divider') /
+      li(class='active')= id
+    a(class="btn btn-primary", href="/edit-task/" + id) Edit Task
   div
     span Start Date:
     span= task.startDate

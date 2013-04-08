@@ -1,0 +1,42 @@
+mixin field(model, type, name, label)
+  div
+    label(for=name) #{label}:
+    input(id=name, type=type, name=name, value=model[name])
+
+mixin readonlyField(model, type, name, label)
+  div
+    label(for=name) #{label}:
+    input(id=name, type=type, name=name, value=model[name], readonly)
+
+mixin largeField(model, type, name, label)
+  div
+    label(for=name) #{label}:
+    input(id=name, type=type, name=name, value=model[name], class="input-xxlarge")
+
+mixin textareaField(model, name, label)
+  div
+    label(for=name) #{label}:
+    textarea(id=name, name=name, class="input-xxlarge")= model[name]
+
+mixin dateField(model, name, label)
+  div
+    div(id=name, class="input-append date")
+      label(for=name + "Input") #{label}:
+      input(id=name + "Input", type="text", name=name, class="input-medium", value=model[name])
+      span(class="add-on")
+        i(data-time-icon="icon-time", data-date-icon="icon-calendar")
+
+mixin submitButtons
+  div
+    button(class="btn btn-primary", type="submit") Submit
+    a(class="btn", href="javascript:history.back()") Cancel
+
+mixin dateTimePickerScript(names)
+  script
+    var dateTimePickerSetting = {
+      format: 'yyyy/MM/dd hh:mm:ss',
+      language: 'pt-BR'
+    };
+  - each name in names
+    script
+      $('##{name}').datetimepicker(dateTimePickerSetting);

@@ -13,7 +13,7 @@ function reqToProject(req, project) {
 }
 
 exports.add = function(req, res){
-  res.render('add-project.jade', {title: 'add project'});
+  res.render('add-project.jade', {title: 'add project', project: {}});
 };
 
 exports.edit = function(req, res){

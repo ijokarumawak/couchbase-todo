@@ -1,19 +1,16 @@
 extends logged-in
 
 block content
-  a(class="btn btn-primary", href="/add-task?project=" + id) Add Task to this project
-  a(class="btn btn-primary", href="/edit-project/" + id) Edit project
-  div
-    span ID:
-    span= id
-  div
-    h2= project.name
-  div
-    span Description:
-    span= project.desc
+  div(class="page-header")
+    h1= project.name
+      small= ' ' +  id
+    p= project.desc
+    a(class="btn btn-primary", href="/add-task?project=" + id) Add Task to this project
+    a(class="btn btn-primary", href="/edit-project/" + id) Edit project
   div
     if project.body
-      != marked(project.body)
+      div(class='well')
+        != marked(project.body)
   div
     table
       tr
