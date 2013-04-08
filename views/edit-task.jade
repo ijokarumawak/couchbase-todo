@@ -12,14 +12,29 @@ block content
       label(for="desc") Description:
       input(type="text", name="desc", value=task.desc, class="input-xxlarge")
     div
-      label(for="startDate") Start date:
-      input(type="text", name="startDate", value=task.startDate)
+      div#startDate(class="input-append date")
+        label(for="startDate") Start date:
+        input(type="text", name="startDate", class="input-medium", value=task.startDate)
+        span(class="add-on")
+          i(data-time-icon="icon-time", data-date-icon="icon-calendar")
     div
-      label(for="endDate") End date:
-      input(type="text", name="endDate", value=task.endDate)
+      div#endDate(class="input-append date")
+        label(for="endDate") End date:
+        input(type="text", name="endDate", class="input-medium", value=task.endDate)
+        span(class="add-on")
+          i(data-time-icon="icon-time", data-date-icon="icon-calendar")
     div
       label(for="body") Body:
       textarea(name="body", class="input-xxlarge")!= task.body
     div
       button(class="btn btn-primary", type="submit") Submit
       a(class="btn", href="javascript:history.back()") Cancel
+block script
+  script
+    var dateTimePickerSetting = {
+      format: 'yyyy/MM/dd hh:mm:ss',
+      language: 'pt-BR'
+    };
+    $('#startDate').datetimepicker(dateTimePickerSetting);
+    $('#endDate').datetimepicker(dateTimePickerSetting);
+
