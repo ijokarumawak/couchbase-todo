@@ -3,8 +3,8 @@ extends logged-in
 block content
   a(class="btn btn-primary", href="/edit-task/" + id) Edit Task
   div
-    span Subject:
-    span= task.subject
+    a(href="/projects/" + task.project)= task.project
+    h2= task.subject
   div
     span Description:
     span= task.desc

@@ -6,12 +6,20 @@ var db = new DataHandler();
 
 function reqToTask(req, task) {
   if(!task) task = {type: 'task'};
+  task.project = req.param('project');
   task.subject = req.param('subject');
   task.desc = req.param('desc');
   task.startDate = req.param('startDate');
   task.endDate = req.param('endDate');
   task.body = req.param('body');
   return task;
+}
+
+function checkProject(projectID, callback) {
+  db.findByID(projectID, function(err, project) {
+    if(err) callback(err);
+    else callback(null, project);
+  });
 }
 
 exports.add = function(req, res){
@@ -46,9 +54,13 @@ exports.put = function(req, res){
     if(rc.isErr(err, res)
        || rc.isNotFound(id, task, res)) return;
     reqToTask(req, task);
-    db.save(id, task, function(err, task){
-      if(rc.isErr(err, res)) return;
-      res.redirect('/tasks/' + id);
+    checkProject(task.project, function(err, project){
+      if(rc.isErr(err, res)
+        || rc.isNotFound(task.project, project, res)) return;
+      db.save(id, task, function(err, task){
+        if(rc.isErr(err, res)) return;
+        res.redirect('/tasks/' + id);
+      });
     });
   });
 }
