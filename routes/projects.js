@@ -51,14 +51,18 @@ exports.put = function(req, res){
 
 exports.get = function(req, res){
   var id = req.params.id;
-  db.findByID(id, function(err, project){
-    if(rc.isErr(err, res)
-       || rc.isNotFound(id, project, res)) return;
+  var findTasks = function(project) {
     db.findTasksByProject(id, function(err, tasks){
       res.render('project.jade', {
         title: 'project:' + id, marked: marked,
         id: id, project: project, tasks: tasks
       });
     });
+  }
+  db.findByID(id, function(err, project){
+    if(rc.isErr(err, res))
+      return;
+    else 
+      findTasks(project);
   });
 }

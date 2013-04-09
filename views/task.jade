@@ -10,10 +10,10 @@ block content
         span(class='divider') /
       li(class='active')= id
     a(class="btn btn-primary", href="/edit-task/" + id) Edit Task
-  div
-    span Start Date:
+  div(class='alert alert-info')
+    strong= 'Start Date: '
     span= task.startDate
-    span End Date:
+    strong= ' | End Date: '
     span= task.endDate
   div
     if task.body

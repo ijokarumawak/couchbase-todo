@@ -18,6 +18,20 @@ mixin textareaField(model, name, label)
     label(for=name) #{label}:
     textarea(id=name, name=name, class="input-xxlarge")= model[name]
 
+mixin statusField(model, name, label, options)
+  div
+    label(for=name) #{label}:
+    select(id=name, name=name)
+      - each option in options
+        if option == model[name]
+          option(selected)= option
+        else
+          option= option
+
+mixin taskStatusField(model)
+  mixin statusField(model, 'status', 'Status', ['open', 'in-progress', 'resolved', 'closed'])
+
+
 mixin dateField(model, name, label)
   div
     div(id=name, class="input-append date")
@@ -40,3 +54,4 @@ mixin dateTimePickerScript(names)
   - each name in names
     script
       $('##{name}').datetimepicker(dateTimePickerSetting);
+

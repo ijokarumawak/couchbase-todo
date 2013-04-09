@@ -8,6 +8,7 @@ function reqToTask(req, task) {
   if(!task) task = {type: 'task'};
   task.project = req.param('project');
   task.subject = req.param('subject');
+  task.status = req.param('status');
   task.desc = req.param('desc');
   task.startDate = req.param('startDate');
   task.endDate = req.param('endDate');

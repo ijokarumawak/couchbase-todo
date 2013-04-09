@@ -1,16 +1,20 @@
 extends logged-in
 
 block content
-  div(class="page-header")
-    h1= project.name
-      small= ' ' +  id
-    p= project.desc
-    a(class="btn btn-primary", href="/add-task?project=" + id) Add Task to this project
-    a(class="btn btn-primary", href="/edit-project/" + id) Edit project
-  div
-    if project.body
-      div(class='well')
-        != marked(project.body)
+  if project
+    div(class="page-header")
+      h1= project.name
+        small= ' ' +  id
+      p= project.desc
+      a(class="btn btn-primary", href="/add-task?project=" + id) Add Task to this project
+      a(class="btn btn-primary", href="/edit-project/" + id) Edit project
+    div
+      if project.body
+        div(class='well')
+          != marked(project.body)
+  else
+    div(class="page-header")
+      h1 Project was not found.
   div
     table
       tr
