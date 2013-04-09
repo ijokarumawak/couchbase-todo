@@ -18,7 +18,7 @@ mixin textareaField(model, name, label)
     label(for=name) #{label}:
     textarea(id=name, name=name, class="input-xxlarge")= model[name]
 
-mixin statusField(model, name, label, options)
+mixin selectField(model, name, label, options)
   div
     label(for=name) #{label}:
     select(id=name, name=name)
@@ -28,15 +28,24 @@ mixin statusField(model, name, label, options)
         else
           option= option
 
+mixin smallSelectField(model, name, label, options)
+  label(for=name) #{label}:
+  select(id=name, name=name, class='input-small')
+    - each option in options
+      if option == model[name]
+        option(selected)= option
+      else
+        option= option
+
 mixin taskStatusField(model)
-  mixin statusField(model, 'status', 'Status', ['open', 'in-progress', 'resolved', 'closed'])
+  mixin selectField(model, 'status', 'Status', ['open', 'in-progress', 'resolved', 'closed'])
 
 
 mixin dateField(model, name, label)
   div
     div(id=name, class="input-append date")
       label(for=name + "Input") #{label}:
-      input(id=name + "Input", type="text", name=name, class="input-medium", value=model[name])
+      input(id=name + "Input", type="text", name=name, class="input-small", value=model[name])
       span(class="add-on")
         i(data-time-icon="icon-time", data-date-icon="icon-calendar")
 
@@ -45,13 +54,24 @@ mixin submitButtons
     button(class="btn btn-primary", type="submit") Submit
     a(class="btn", href="javascript:history.back()") Cancel
 
+mixin dateTimeFields(model, name, label)
+  div(class='row')
+    div(class='span2')
+      mixin dateField(task, name + 'Date', label + ' date')
+    div(class='span2')
+      mixin timeSelectField(task, name + 'Time', label + ' time')
+
 mixin dateTimePickerScript(names)
   script
     var dateTimePickerSetting = {
-      format: 'yyyy/MM/dd hh:mm:ss',
-      language: 'pt-BR'
+      format: 'yyyy/MM/dd',
+      language: 'pt-BR',
+      pickTime: false
     };
   - each name in names
     script
       $('##{name}').datetimepicker(dateTimePickerSetting);
+
+mixin timeSelectField(model, name, label)
+  mixin smallSelectField(model, name, label, ['', '00:00', '00:30', '01:00', '01:30', '02:00', '02:30', '03:00', '03:30', '04:00', '04:30', '05:00', '05:30', '06:00', '06:30', '07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00', '23:30'])
 

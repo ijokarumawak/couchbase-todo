@@ -11,7 +11,9 @@ function reqToTask(req, task) {
   task.status = req.param('status');
   task.desc = req.param('desc');
   task.startDate = req.param('startDate');
+  task.startTime = req.param('startTime');
   task.endDate = req.param('endDate');
+  task.endTime = req.param('endTime');
   task.body = req.param('body');
   return task;
 }

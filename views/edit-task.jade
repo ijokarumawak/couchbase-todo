@@ -7,8 +7,8 @@ block content
     mixin largeField(task, 'text', 'subject', 'Subject')
     mixin largeField(task, 'text', 'desc', 'Description')
     mixin taskStatusField(task)
-    mixin dateField(task, 'startDate', 'Start date')
-    mixin dateField(task, 'endDate', 'End date')
+    mixin dateTimeFields(task, 'start', 'Start')
+    mixin dateTimeFields(task, 'end', 'End')
     mixin textareaField(task, 'body', 'Body')
     mixin submitButtons
 block script
