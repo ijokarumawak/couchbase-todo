@@ -1,9 +1,12 @@
 extends logged-in
+include mixins/status
 
 block content
   div(class='page-header')
     h1= task.subject
-      small= ' ' + task.desc
+    p
+      mixin statusLabel(task.status ? task.status : 'open')
+      span  #{task.desc}
     ul(class='breadcrumb')
       li
         a(href="/projects/" + task.project)= task.project

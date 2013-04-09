@@ -1,4 +1,5 @@
 extends logged-in
+include mixins/status
 
 block content
   if project
@@ -25,5 +26,6 @@ block content
         tr
           td
             a(href="/tasks/" + task.id)= task.id
-          td= task.status
+          td
+            mixin statusLabel(task.status)
           td= task.subject

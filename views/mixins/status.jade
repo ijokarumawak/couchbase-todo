@@ -1,0 +1,10 @@
+mixin statusLabel(status, count)
+  if status == 'open'
+    span(class='label label-important') #{status} #{count}
+  else if status == 'in-progress'
+    span(class='label label-warning') #{status} #{count}
+  else if status == 'resolved'
+    span(class='label label-success') #{status} #{count}
+  else if status == 'closed'
+    span(class='label') #{status} #{count}
+
