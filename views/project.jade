@@ -19,9 +19,11 @@ block content
     table
       tr
         th ID
+        th Status
         th Subject
       - each task in tasks
         tr
           td
             a(href="/tasks/" + task.id)= task.id
+          td= task.status
           td= task.subject

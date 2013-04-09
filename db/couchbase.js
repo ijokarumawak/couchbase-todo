@@ -60,7 +60,7 @@ DataHandler.prototype.findProjects = function(callback) {
 }
 
 DataHandler.prototype.findTasksByProject = function(projectId, callback) {
-  var q = {"key": projectId};
+  var q = {'key': projectId, 'stale': false};
   this.cb.view('dev_task', 'project', q, function(err, res){
     if(err){
       callback(err);
@@ -68,10 +68,8 @@ DataHandler.prototype.findTasksByProject = function(projectId, callback) {
     }
     var tasks = new Array();
     for(var i = 0; i < res.length; i++){
-      tasks[i] = {
-        id: res[i].id,
-        subject: res[i].value
-      };
+      tasks[i] = res[i].value;
+      tasks[i].id = res[i].id;
     }
     callback(null, tasks);
   });
