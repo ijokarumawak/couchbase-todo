@@ -12,6 +12,7 @@
     "config": "*",
     "yaml": "*",
     "couchbase": "*",
+    "memcached": "*",
     "marked": "*"
   }
 }

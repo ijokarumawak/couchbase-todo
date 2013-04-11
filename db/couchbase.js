@@ -1,5 +1,7 @@
 var driver = require('couchbase');
 var config = require('config');
+var Memcached = require('memcached');
+var memcached = new Memcached('192.168.163.144:11212');
 
 DataHandler = function(){};
 
@@ -29,7 +31,11 @@ DataHandler.prototype.save = function(id, data, callback) {
 };
 
 DataHandler.prototype.findByID = function(id, callback) {
-  this.cb.get(id.toString(), function(err, doc){
+  // this.cb.get(id.toString(), function(err, doc){
+  console.log('trying to get the data using memcached');
+  memcached.get(id.toString(), function(err, doc){
+    console.log('err=' + err);
+    console.log('doc=' + doc);
     if(err) {
       if(err.code == 13) {
         console.log('document was not found: ' + id);
@@ -37,7 +43,9 @@ DataHandler.prototype.findByID = function(id, callback) {
       }
       else callback(err, null);
     }
-    else callback(null, doc);
+    else {
+      callback(null, JSON.parse(doc));
+    }
   });
 }
 
