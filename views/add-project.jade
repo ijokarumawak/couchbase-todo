@@ -6,5 +6,7 @@ block content
     mixin field({}, 'text', 'id', 'ID')
     mixin field(project, 'text', 'name', 'Name')
     mixin largeField(project, 'text', 'desc', 'Description')
-    mixin textareaField(project, 'body', 'Body')
+    mixin markdownInput(project, 'body', 'Body')
     mixin submitButtons
+block script
+  mixin markdownInputScript(['body'])

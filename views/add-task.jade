@@ -9,7 +9,8 @@ block content
     mixin taskStatusField(task)
     mixin dateTimeFields(task, 'start', 'Start')
     mixin dateTimeFields(task, 'end', 'End')
-    mixin textareaField(task, 'body', 'Body')
+    mixin markdownInput(task, 'body', 'Body')
     mixin submitButtons
 block script
   mixin dateTimePickerScript(['startDate', 'endDate'])
+  mixin markdownInputScript(['body'])
