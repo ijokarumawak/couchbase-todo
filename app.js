@@ -56,8 +56,10 @@ app.get('/edit-project/:id', projects.edit);
 app.post('/projects/:id', projects.put);
 
 // comments
-app.post('/comments', comments.post);
+app.post('/tasks/:taskID/comments', comments.post);
 app.get('/tasks/:taskID/comments', comments.findComments);
+app.get('/tasks/:taskID/comments/:commentID', comments.findByID);
+app.put('/tasks/:taskID/comments/:commentID', comments.put);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

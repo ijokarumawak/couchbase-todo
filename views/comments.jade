@@ -1,5 +1,10 @@
 div#comments
   - each comment in comments
-    div
-      p #{comment['body']}
-      p #{comment.createdAt}
+    hr
+    div(class='commentContainer')
+      != marked(comment['body'])
+      div(class='row')
+        div(class='span3')
+          span(class='weak')= moment(comment.createdAt).fromNow()
+        div(class='span2 offset7')
+          a(href="#", onclick="editComment(#{comment.id}); return false;") Edit

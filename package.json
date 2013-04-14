@@ -15,6 +15,7 @@
     "memcached": "*",
     "marked": "*",
     "pagedown": "*",
-    "async": "*"
+    "async": "*",
+    "moment": "*"
   }
 }

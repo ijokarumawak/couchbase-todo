@@ -105,6 +105,7 @@ DataHandler.prototype.findComments = function(taskID, callback) {
           return;
         }
         comments[i] = JSON.parse(doc);
+        comments[i].id = r.id;
         callback();
       });
     }, function(err) {

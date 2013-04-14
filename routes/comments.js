@@ -1,5 +1,6 @@
 var util = require('util'),
     marked = require('marked'),
+    moment = require('moment'),
     rc = require('./response-check.js'),
     DataHandler = require('../db/couchbase.js').DataHandler;
 var db = new DataHandler();
@@ -24,18 +25,16 @@ exports.post = function(req, res){
 };
 
 exports.put = function(req, res){
-  var id = req.params.id;
+  var id = req.params.commentID;
   db.findByID(id, function(err, comment){
     if(rc.isErr(err, res)
        || rc.isNotFound(id, comment, res)) return;
-    reqToTask(req, comment);
-    checkProject(comment.project, function(err, project){
-      if(rc.isErr(err, res)
-        || rc.isNotFound(comment.project, project, res)) return;
-      db.save(id, comment, function(err, comment){
-        if(rc.isErr(err, res)) return;
-        res.redirect('/comments/' + id);
-      });
+    var reqComment = reqToComment(req);
+    comment.body = reqComment.body;
+    comment.updatedAt = new Date().getTime();
+    db.save(id, comment, function(err, comment){
+      if(rc.isErr(err, res)) return;
+      res.send(comment);
     });
   });
 }
@@ -44,6 +43,15 @@ exports.findComments = function(req, res){
   var taskID = req.params.taskID;
   db.findComments(taskID, function(err, comments){
     if(rc.isErr(err, res)) return;
-    res.render('comments.jade', {comments: comments, marked: marked});
+    res.render('comments.jade', {comments: comments, marked: marked, moment: moment});
+  });
+}
+
+exports.findByID = function(req, res){
+  var commentID = req.params.commentID;
+  db.findByID(commentID, function(err, comment){
+    if(rc.isErr(err, res)
+       || rc.isNotFound(commentID, comment, res)) return;
+    res.send(comment);
   });
 }
