@@ -1,0 +1,5 @@
+div#comments
+  - each comment in comments
+    div
+      p #{comment['body']}
+      p #{comment.createdAt}

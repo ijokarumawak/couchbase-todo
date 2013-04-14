@@ -1,5 +1,6 @@
 extends logged-in
 include mixins/status
+include mixins/form
 
 block content
   div(class='page-header')
@@ -13,6 +14,7 @@ block content
         span(class='divider') /
       li(class='active')= id
     a(class="btn btn-primary", href="/edit-task/" + id) Edit Task
+    a(class="btn btn-primary", href="#addCommentDialog", data-toggle="modal") Add Comment
   div(class='alert alert-info')
     strong= 'Start Date: '
     span= task.startDate
@@ -21,3 +23,43 @@ block content
   div
     if task.body
       != marked(task.body)
+  hr
+  div#comments
+  div#addCommentDialog(class="modal hide fade", tabindex="-1", role="dialog")
+    div(class="modal-header")
+      a(href="#", class="close", data-dismiss="modal") x
+      h3 Comment.
+    div(class="modal-body")
+      mixin markdownInput({}, 'commentBody', 'comment')
+    div(class="modal-footer")
+      a(href="#", class="btn btn-primary", onclick="addComment()") Add
+      a(href="#addCommentDialog", class="btn", data-toggle="modal") Cancel
+block script
+  mixin markdownInputScript(['commentBody'])
+  script
+    function addComment() {
+      var comment = {
+        body: $('#wmd-input_commentBody').val(),
+        task: #{id}
+      }
+      $.ajax({
+        url: '/comments/',
+        type: 'POST',
+        data: {comment: JSON.stringify(comment)},
+        success: function(res) { 
+          $('#addCommentDialog').modal('hide');
+          showComments();
+          $('#wmd-input_commentBody').val('');
+          alert('Comment added.');
+        }
+      });
+    }
+    function showComments() {
+      $.ajax({
+        url: '/tasks/#{id}/comments/',
+        success: function(res) {
+          $('#comments').replaceWith(res);
+        }
+      });
+    }
+    showComments();

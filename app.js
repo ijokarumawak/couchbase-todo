@@ -7,8 +7,9 @@ var express = require('express'),
   routes = require('./routes'),
   user = require('./routes/user'),
   auth = require('./routes/auth'),
-  tasks = require('./routes/tasks');
-  projects = require('./routes/projects');
+  tasks = require('./routes/tasks'),
+  projects = require('./routes/projects'),
+  comments = require('./routes/comments'),
   http = require('http'),
   path = require('path'),
   config = require('config');
@@ -53,6 +54,10 @@ app.post('/projects', projects.post);
 app.get('/projects/:id', projects.get);
 app.get('/edit-project/:id', projects.edit);
 app.post('/projects/:id', projects.put);
+
+// comments
+app.post('/comments', comments.post);
+app.get('/tasks/:taskID/comments', comments.findComments);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

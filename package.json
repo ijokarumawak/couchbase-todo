@@ -14,6 +14,7 @@
     "couchbase": "*",
     "memcached": "*",
     "marked": "*",
-    "pagedown": "*"
+    "pagedown": "*",
+    "async": "*"
   }
 }

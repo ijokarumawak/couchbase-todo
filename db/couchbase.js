@@ -1,5 +1,6 @@
 var driver = require('couchbase');
 var config = require('config');
+var async = require('async');
 var Memcached = require('memcached');
 var memcached = new Memcached('192.168.163.144:11212');
 
@@ -80,6 +81,39 @@ DataHandler.prototype.findTasksByProject = function(projectId, callback) {
       tasks[i].id = res[i].id;
     }
     callback(null, tasks);
+  });
+}
+
+DataHandler.prototype.findComments = function(taskID, callback) {
+  var q = {'stale': false,
+    'descending': true,
+    'startkey' : [Number(taskID), "X"],
+    'endkey' : [Number(taskID)]
+  };
+  console.log(JSON.stringify(q));
+  this.cb.view('dev_comment', 'by_task', q, function(err, res){
+    if(err){
+      callback(err);
+      return;
+    }
+    var comments = new Array();
+    async.eachIndex(res, function(r, i, callback) {
+      // Retrieve each comment asynchronouslly.
+      memcached.get(r.id, function(err, doc){
+        if(err) {
+          callback(err);
+          return;
+        }
+        comments[i] = JSON.parse(doc);
+        callback();
+      });
+    }, function(err) {
+      // Call outer callback with retrieved comments or raised error.
+      if(err){
+        callback(err);
+      }
+      callback(null, comments);
+    });
   });
 }
 
