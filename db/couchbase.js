@@ -112,6 +112,7 @@ DataHandler.prototype.findComments = function(taskID, callback) {
       // Call outer callback with retrieved comments or raised error.
       if(err){
         callback(err);
+        return;
       }
       callback(null, comments);
     });

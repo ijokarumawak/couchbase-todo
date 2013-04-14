@@ -10,6 +10,7 @@ var express = require('express'),
   tasks = require('./routes/tasks'),
   projects = require('./routes/projects'),
   comments = require('./routes/comments'),
+  search = require('./routes/search'),
   http = require('http'),
   path = require('path'),
   config = require('config');
@@ -60,6 +61,10 @@ app.post('/tasks/:taskID/comments', comments.post);
 app.get('/tasks/:taskID/comments', comments.findComments);
 app.get('/tasks/:taskID/comments/:commentID', comments.findByID);
 app.put('/tasks/:taskID/comments/:commentID', comments.put);
+
+// search
+app.post('/search/', search.post);
+app.get('/search-result', search.showSearchResult);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

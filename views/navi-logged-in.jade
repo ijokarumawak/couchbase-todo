@@ -9,3 +9,7 @@ div(class='navbar')
         a(href="/add-task") Add Task
       li
         a(href="/add-project") Add Project
+      li
+        form(method="GET", action="/search-result")
+          input(type="text", name="q", class="search-query")
+          button(type="submit") search

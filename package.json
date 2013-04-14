@@ -16,6 +16,7 @@
     "marked": "*",
     "pagedown": "*",
     "async": "*",
-    "moment": "*"
+    "moment": "*",
+    "elasticsearchclient": "*"
   }
 }
