@@ -2,22 +2,30 @@ extends logged-in
 include mixins/status
 
 block content
-  div
-    table
-      tr
-        th ID
-        th Type
-        th Title
-        th Desc
-      - each doc in docs
+  h3 Search Result
+  if docs.length == 0
+    p Nothing was found. Please change the search condition.
+  else
+    p Found #{docs.length} documents.
+    div
+      table(class="data")
         tr
-          td
-            if doc.type == 'task'
-              a(href="/tasks/#{doc.id}")= doc.id
-            else if doc.type == 'project'
-              a(href="/projects/#{doc.id}")= doc.id
-            else if doc.type == 'comment'
-              a(href="/tasks/#{doc.task}")= doc.id
-          td= doc.type
-          td= doc.title
-          td= doc.desc
+          th ID
+          th Type
+          th Title
+          th Desc
+        - each doc in docs
+          tr
+            td
+              if doc.type == 'task'
+                a(href="/tasks/#{doc.id}")= doc.id
+              else if doc.type == 'project'
+                a(href="/projects/#{doc.id}")= doc.id
+              else if doc.type == 'comment'
+                a(href="/tasks/#{doc.task}")= doc.id
+            td= doc.type
+            td= doc.title
+            td= doc.desc
+block script
+  script
+    $('#searchQuery').val('#{q}');

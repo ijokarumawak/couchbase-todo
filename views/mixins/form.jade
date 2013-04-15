@@ -71,7 +71,7 @@ mixin dateTimeFields(model, name, label)
   div(class='row')
     div(class='span2')
       mixin dateField(task, name + 'Date', label + ' date')
-    div(class='span2')
+    div(class='span2 offset1')
       mixin timeSelectField(task, name + 'Time', label + ' time')
 
 mixin dateTimePickerScript(names)

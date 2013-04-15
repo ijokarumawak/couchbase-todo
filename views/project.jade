@@ -7,8 +7,9 @@ block content
       h1= project.name
         small= ' ' +  id
       p= project.desc
-      a(class="btn btn-primary", href="/add-task?project=" + id) Add Task to this project
-      a(class="btn btn-primary", href="/edit-project/" + id) Edit project
+      div(class="btn-group")
+        a(class="btn btn-primary", href="/add-task?project=" + id) Add Task to this project
+        a(class="btn btn-primary", href="/edit-project/" + id) Edit project
     div
       if project.body
         div(class='well')
@@ -17,11 +18,11 @@ block content
     div(class="page-header")
       h1 Project was not found.
   div
-    table
+    table(class="data")
       tr
-        th ID
-        th Status
-        th Subject
+        th(class="span1") ID
+        th(class="span2") Status
+        th(class="span9") Subject
       - each task in tasks
         tr
           td

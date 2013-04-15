@@ -25,6 +25,10 @@ exports.searchAll = function(queryString, callback){
     }
     var res = JSON.parse(data);
     var hits = new Array();
+    if(!res.hits) {
+      callback(null, hits);
+      return;
+    }
     async.eachIndex(res.hits.hits, function(hit, i, callback) {
       db.findByID(hit._id, function(err, doc) {
         if(err) {

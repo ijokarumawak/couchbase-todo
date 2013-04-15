@@ -12,8 +12,9 @@ exports.post = function(req, res){
 }
 
 exports.showSearchResult = function(req, res) {
-  search.searchAll(req.param('q'), function(err, docs){
+  var q = req.param('q');
+  search.searchAll(q, function(err, docs){
     if(rc.isErr(err, res)) return;
-    res.render('search-result.jade', {title: 'search result', docs: docs});
+    res.render('search-result.jade', {title: 'search result', q: q, docs: docs});
   });
 }

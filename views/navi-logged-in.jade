@@ -1,15 +1,16 @@
 div(class='navbar')
   div(class='navbar-inner')
-    ul(class="nav")
-      li
-        a(href='/') Home
-      li
-        a(href='/gantt') Gantt Chart
-      li
-        a(href="/add-task") Add Task
-      li
-        a(href="/add-project") Add Project
-      li
-        form(method="GET", action="/search-result")
-          input(type="text", name="q", class="search-query")
-          button(type="submit") search
+    form#searchForm(method="GET", action="/search-result", class="search-form")
+      ul(class="nav")
+        li
+          a(href='/') Home
+        li
+          a(href='/gantt') Gantt Chart
+        li
+          a(href="/add-task") Add Task
+        li
+          a(href="/add-project") Add Project
+        li
+          input#searchQuery(type="text", name="q", class="search-query")
+        li
+          a(href="#", onclick="$('#searchForm')[0].submit()") Search

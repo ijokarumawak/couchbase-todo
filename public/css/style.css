@@ -3,14 +3,44 @@
 }
 
 .weak {
-  color: #aaa;
+  color: #999;
 }
 
-body .modal {
+.modal {
   /* new custom width */
   width: 600px;
   /* must be half of the width, minus scrollbar on the left (30px) */
   margin-left: -300px;
+}
+
+table.data{
+  border-collapse: collapse;
+  border: 1px solid #cacaca;
+  outline: 3px solid #f7f7f7;
+}
+
+table.data th{
+  background: #e6f1f6;
+  color: #86a1a6;
+  border: 1px solid #dadada;
+  font-weight: normal;
+}
+
+table.data td{
+  border-top: 1px solid #eee;
+  border: 1px solid #eee;
+  padding: 2px 8px;
+  vertical-align: middle;
+  background: #fdfdfd;
+}
+
+.search-form {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.search-form input {
+  margin-top: 5px;
 }
 
 .wmd-panel
