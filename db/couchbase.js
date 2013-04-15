@@ -16,7 +16,7 @@ driver.connect(config.Couchbase.connection, function(err, cb){
 DataHandler.prototype.publishUID = function(callback) {
   this.cb.incr('uid', function(err, id){
     if(err) {
-      calllback(err);
+      callback(err);
       return;
     }
     callback(null, id);
@@ -41,12 +41,16 @@ DataHandler.prototype.findByID = function(id, callback) {
       if(err.code == 13) {
         console.log('document was not found: ' + id);
         callback(null, null);
+        return;
       }
-      else callback(err, null);
+      else {
+        callback(err, null);
+        return;
+      }
     }
-    else {
-      callback(null, JSON.parse(doc));
-    }
+    // memcached client returns false as a doc if the key doesn't exist.
+    if(doc) callback(null, JSON.parse(doc));
+    else callback(null, null);
   });
 }
 

@@ -16,4 +16,18 @@ exports.isNotFound = function(id, obj, res) {
   return false;
 }
 
+exports.err = function(err, callback) {
+  if(err) {
+    callback(err);
+    return true;
+  }
+  return false;
+}
 
+exports.none = function(obj, msg, callback) {
+  if(!obj) {
+    callback(new Error(msg));
+    return true;
+  }
+  return false;
+}
