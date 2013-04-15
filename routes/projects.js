@@ -12,12 +12,12 @@ function reqToProject(req, project) {
   return project;
 }
 
-exports.add = function(req, res){
+exports.showAddPage = function(req, res){
   res.render('add-project.jade', {title: 'add project', project: {}});
 };
 
-exports.edit = function(req, res){
-  var id = req.params.id;
+exports.showEditPage = function(req, res){
+  var id = req.param('id');
   db.findByID(id, function(err, project){
     if(rc.isErr(err, res)
        || rc.isNotFound(id, project, res)) return;
@@ -26,31 +26,31 @@ exports.edit = function(req, res){
   });
 };
 
-exports.post = function(req, res){
+exports.add = function(req, res){
   // do some validation.
   var project = reqToProject(req);
   var id = req.param('id');
   db.add(id, project, function(err, project){
     if(rc.isErr(err, res)) return;
-    res.redirect('/projects/' + id);
+    res.redirect('/project?id=' + id);
   });
 };
 
-exports.put = function(req, res){
-  var id = req.params.id;
+exports.edit = function(req, res){
+  var id = req.param('id');
   db.findByID(id, function(err, project){
     if(rc.isErr(err, res)
        || rc.isNotFound(id, project, res)) return;
     reqToProject(req, project);
     db.save(id, project, function(err, project){
       if(rc.isErr(err, res)) return;
-      res.redirect('/projects/' + id);
+      res.redirect('/project?id=' + id);
     });
   });
 }
 
-exports.get = function(req, res){
-  var id = req.params.id;
+exports.show = function(req, res){
+  var id = req.param('id');
   var findTasks = function(project) {
     db.findTasksByProject(id, function(err, tasks){
       res.render('project.jade', {

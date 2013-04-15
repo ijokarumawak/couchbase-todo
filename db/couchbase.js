@@ -2,7 +2,7 @@ var driver = require('couchbase');
 var config = require('config');
 var async = require('async');
 var Memcached = require('memcached');
-var memcached = new Memcached('192.168.163.144:11212');
+var memcached = new Memcached(config.Memcached.host);
 
 DataHandler = function(){};
 

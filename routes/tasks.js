@@ -26,14 +26,14 @@ function checkProject(projectID, callback) {
   });
 }
 
-exports.add = function(req, res){
+exports.showAddPage = function(req, res){
   res.render('add-task.jade', {
     title: 'add task', task: {project: req.param('project')}
   });
 };
 
-exports.edit = function(req, res){
-  var id = req.params.id;
+exports.showEditPage = function(req, res){
+  var id = req.param('id');
   db.findByID(id, function(err, task){
     if(rc.isErr(err, res)
        || rc.isNotFound(id, task, res)) return;
@@ -58,7 +58,7 @@ exports.checkProject = function(task, callback) {
   }
 }
 
-exports.insert = function(req, next){
+exports.post = function(task, next){
   var locals = {};
   async.series({
     publishID: function(callback){
@@ -66,7 +66,7 @@ exports.insert = function(req, next){
       db.publishUID(function(err, publishedID){
         if(rc.err(err, callback)) return;
         console.log('Published ID: ' + publishedID);
-        locals.task = reqToTask(req);
+        locals.task = task;
         locals.id = publishedID;
         callback();
       });
@@ -91,6 +91,7 @@ exports.insert = function(req, next){
     next(null, locals);
   });
 }
+
 exports.update = function(id, req, next){
   var locals = {};
   async.series({
@@ -124,23 +125,24 @@ exports.update = function(id, req, next){
   });
 }
 
-exports.post = function(req, res){
-  exports.insert(req, function(err, locals){
+exports.add = function(req, res){
+  var task = reqToTask(req);
+  exports.post(task, function(err, locals){
     if(rc.isErr(err, res)) return;
-    res.redirect('/tasks/' + locals.id);
+    res.redirect('/task?id=' + locals.id);
   });
 };
 
-exports.put = function(req, res){
-  var id = req.params.id;
-  exports.update(id, req, function(err, task){
+exports.edit = function(req, res){
+  var id = req.param('id');
+  exports.update(id, req, function(err, locals){
     if(rc.isErr(err, res)) return;
-    res.redirect('/tasks/' + id);
+    res.redirect('/task?id=' + id);
   });
 }
 
-exports.get = function(req, res){
-  var id = req.params.id;
+exports.show = function(req, res){
+  var id = req.param('id');
   db.findByID(id, function(err, task){
     if(rc.isErr(err, res)
        || rc.isNotFound(id, task, res)) return;

@@ -2,7 +2,7 @@ extends logged-in
 include mixins/form.jade
 
 block content
-  form(method="post", action="/projects/" + id)
+  form(method="post", action="/edit-project?id=" + id)
     mixin readonlyField({id: id}, 'text', 'id', 'ID')
     mixin field(project, 'text', 'name', 'Name')
     mixin largeField(project, 'text', 'desc', 'Description')

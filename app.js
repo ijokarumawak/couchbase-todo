@@ -43,22 +43,22 @@ app.get('/auth', auth.auth);
 app.get('/users', user.list);
 
 // tasks
-app.get('/add-task', tasks.add);
-app.post('/tasks', tasks.post);
-app.get('/tasks/:id', tasks.get);
-app.get('/edit-task/:id', tasks.edit);
-app.post('/tasks/:id', tasks.put);
+app.get('/task', tasks.show);
+app.get('/add-task', tasks.showAddPage);
+app.get('/edit-task', tasks.showEditPage);
+app.post('/add-task', tasks.add);
+app.post('/edit-task', tasks.edit);
 
 // projects
-app.get('/add-project', projects.add);
-app.post('/projects', projects.post);
-app.get('/projects/:id', projects.get);
-app.get('/edit-project/:id', projects.edit);
-app.post('/projects/:id', projects.put);
+app.get('/project', projects.show);
+app.get('/add-project', projects.showAddPage);
+app.get('/edit-project', projects.showEditPage);
+app.post('/add-project', projects.add);
+app.post('/edit-project', projects.edit);
 
 // comments
-app.post('/tasks/:taskID/comments', comments.post);
-app.get('/tasks/:taskID/comments', comments.findComments);
+app.post('/tasks/:taskID/comments/', comments.post);
+app.get('/tasks/:taskID/comments/', comments.findComments);
 app.get('/tasks/:taskID/comments/:commentID', comments.findByID);
 app.put('/tasks/:taskID/comments/:commentID', comments.put);
 

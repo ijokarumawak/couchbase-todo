@@ -2,7 +2,7 @@ extends logged-in
 include mixins/form
 
 block content
-  form(method="post", action="/tasks/" + id)
+  form(method="post", action="/edit-task?id=" + id)
     mixin field(task, 'text', 'project', 'Project')
     mixin largeField(task, 'text', 'subject', 'Subject')
     mixin largeField(task, 'text', 'desc', 'Description')

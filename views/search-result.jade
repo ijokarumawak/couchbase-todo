@@ -18,11 +18,11 @@ block content
           tr
             td
               if doc.type == 'task'
-                a(href="/tasks/#{doc.id}")= doc.id
+                a(href="/task?id=#{doc.id}")= doc.id
               else if doc.type == 'project'
-                a(href="/projects/#{doc.id}")= doc.id
+                a(href="/project?id=#{doc.id}")= doc.id
               else if doc.type == 'comment'
-                a(href="/tasks/#{doc.task}")= doc.id
+                a(href="/task?id=#{doc.task}")= doc.id
             td= doc.type
             td= doc.title
             td= doc.desc

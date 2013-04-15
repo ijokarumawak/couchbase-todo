@@ -9,7 +9,7 @@ block content
       p= project.desc
       div(class="btn-group")
         a(class="btn btn-primary", href="/add-task?project=" + id) Add Task to this project
-        a(class="btn btn-primary", href="/edit-project/" + id) Edit project
+        a(class="btn btn-primary", href="/edit-project?id=" + id) Edit project
     div
       if project.body
         div(class='well')
@@ -17,16 +17,17 @@ block content
   else
     div(class="page-header")
       h1 Project was not found.
-  div
-    table(class="data")
-      tr
-        th(class="span1") ID
-        th(class="span2") Status
-        th(class="span9") Subject
-      - each task in tasks
+  if tasks.length > 0
+    div
+      table(class="data")
         tr
-          td
-            a(href="/tasks/" + task.id)= task.id
-          td
-            mixin statusLabel(task.status)
-          td= task.subject
+          th(class="span1") ID
+          th(class="span2") Status
+          th(class="span9") Subject
+        - each task in tasks
+          tr
+            td
+              a(href="/task?id=" + task.id)= task.id
+            td
+              mixin statusLabel(task.status)
+            td= task.subject

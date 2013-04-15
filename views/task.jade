@@ -14,7 +14,7 @@ block content
         span(class='divider') /
       li(class='active')= id
     div(class="btn-group")
-      a(class="btn btn-primary", href="/edit-task/" + id) Edit Task
+      a(class="btn btn-primary", href="/edit-task?id=" + id) Edit Task
       a(class="btn btn-primary", href="#addCommentDialog", data-toggle="modal") Add Comment
   div(class='alert alert-info')
     strong= 'Start Date: '
