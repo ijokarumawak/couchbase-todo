@@ -1,14 +1,17 @@
 var util = require('util'),
     marked = require('marked'),
+    async = require('async'),
     rc = require('./response-check.js'),
     DataHandler = require('../db/couchbase.js').DataHandler;
 var db = new DataHandler();
 
 function reqToProject(req, project) {
   if(!project) project = {type: 'project'};
-  project.name = req.param('name');
-  project.desc = req.param('desc');
-  project.body = req.param('body');
+  var names = ['name', 'desc', 'body'];
+  names.forEach(function(name){
+    var p = req.param(name);
+    if(p) project[name] = p;
+  });
   return project;
 }
 
@@ -26,11 +29,35 @@ exports.showEditPage = function(req, res){
   });
 };
 
+exports.put = function(id, _project, next){
+  _project.type = 'project';
+  var locals = {project: _project};
+  async.series({
+    save: function(callback){
+      console.log('Saving the project: ' + id);
+      db.save(id, locals.project, function(err, project){
+        if(rc.err(err, callback)) return;
+        callback();
+      });
+    }
+  }, function(err){
+    if(rc.err(err, next)) return;
+    next(null, locals);
+  });
+}
+
+exports.get = function(id, next){
+  db.findByID(id, function(err, doc){
+    if(rc.err(err, next)) return;
+    next(null, doc);
+  });
+}
+
 exports.add = function(req, res){
   // do some validation.
   var project = reqToProject(req);
   var id = req.param('id');
-  db.add(id, project, function(err, project){
+  exports.put(id, project, function(err, project){
     if(rc.isErr(err, res)) return;
     res.redirect('/project?id=' + id);
   });
@@ -38,15 +65,16 @@ exports.add = function(req, res){
 
 exports.edit = function(req, res){
   var id = req.param('id');
-  db.findByID(id, function(err, project){
+  exports.get(id, function(err, project) {
     if(rc.isErr(err, res)
-       || rc.isNotFound(id, project, res)) return;
+      || rc.isNotFound(id, project, res)) return;
     reqToProject(req, project);
-    db.save(id, project, function(err, project){
+    exports.put(id, project, function(err, locals){
       if(rc.isErr(err, res)) return;
       res.redirect('/project?id=' + id);
     });
   });
+
 }
 
 exports.show = function(req, res){

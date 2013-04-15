@@ -4,18 +4,15 @@ var util = require('util'),
     async = require('async'),
     DataHandler = require('../db/couchbase.js').DataHandler;
 var db = new DataHandler();
-
+ 
 function reqToTask(req, task) {
   if(!task) task = {type: 'task'};
-  task.project = req.param('project');
-  task.subject = req.param('subject');
-  task.status = req.param('status');
-  task.desc = req.param('desc');
-  task.startDate = req.param('startDate');
-  task.startTime = req.param('startTime');
-  task.endDate = req.param('endDate');
-  task.endTime = req.param('endTime');
-  task.body = req.param('body');
+  var names = ['project', 'subject', 'status', 'desc',
+        'startDate', 'startTime', 'endDate', 'endTime', 'body'];
+  names.forEach(function(name){
+    var p = req.param(name);
+    if(p) task[name] = p;
+  });
   return task;
 }
 
@@ -60,6 +57,7 @@ exports.checkProject = function(task, callback) {
 
 exports.post = function(task, next){
   var locals = {};
+  task.type = 'task';
   async.series({
     publishID: function(callback){
       console.log('Publishing ID');
@@ -92,18 +90,10 @@ exports.post = function(task, next){
   });
 }
 
-exports.update = function(id, req, next){
-  var locals = {};
+exports.put = function(id, _task, next){
+  _task.type = 'task';
+  var locals = {task: _task};
   async.series({
-    getTask: function(callback){
-      console.log('Getting the task: ' + id);
-      db.findByID(id, function(err, task){
-        if(rc.err(err, callback)) return;
-        if(rc.none(task, 'Task was not found: ' + id, callback)) return;
-        locals.task = reqToTask(req, task);
-        callback();
-      })
-    },
     checkProject: function(callback) {
       exports.checkProject(locals.task, function(err, project) {
           if(rc.err(err, callback)) return;
@@ -125,6 +115,13 @@ exports.update = function(id, req, next){
   });
 }
 
+exports.get = function(id, next){
+  db.findByID(id, function(err, doc){
+    if(rc.err(err, next)) return;
+    next(null, doc);
+  });
+}
+
 exports.add = function(req, res){
   var task = reqToTask(req);
   exports.post(task, function(err, locals){
@@ -135,9 +132,14 @@ exports.add = function(req, res){
 
 exports.edit = function(req, res){
   var id = req.param('id');
-  exports.update(id, req, function(err, locals){
-    if(rc.isErr(err, res)) return;
-    res.redirect('/task?id=' + id);
+  exports.get(id, function(err, task) {
+    if(rc.isErr(err, res)
+      || rc.isNotFound(id, task, res)) return;
+    reqToTask(req, task);
+    exports.put(id, task, function(err, locals){
+      if(rc.isErr(err, res)) return;
+      res.redirect('/task?id=' + id);
+    });
   });
 }
 

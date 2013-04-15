@@ -10,7 +10,7 @@ block content
       span  #{task.desc}
     ul(class='breadcrumb')
       li
-        a(href="/projects/" + task.project)= task.project
+        a(href="/project?id=" + task.project)= task.project
         span(class='divider') /
       li(class='active')= id
     div(class="btn-group")
