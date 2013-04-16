@@ -11,7 +11,7 @@ mixin readonlyField(model, type, name, label)
 mixin largeField(model, type, name, label)
   div
     label(for=name) #{label}:
-    input(id=name, type=type, name=name, value=model[name], class="input-xxlarge")
+    input(id=name, type=type, name=name, value=model[name], class="input-xxlarge", spellcheck="true")
 
 mixin textareaField(model, name, label)
   div
