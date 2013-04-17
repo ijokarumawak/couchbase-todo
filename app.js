@@ -11,9 +11,42 @@ var express = require('express'),
   projects = require('./routes/projects'),
   comments = require('./routes/comments'),
   search = require('./routes/search'),
+  users = require('./routes/users'),
   http = require('http'),
   path = require('path'),
-  config = require('config');
+  config = require('config'),
+  everyauth = require('everyauth');
+
+everyauth.debug = true;
+everyauth.password
+  .loginWith('login')
+  .getLoginPath('/login')
+  .postLoginPath('/login')
+  .loginView('login.jade')
+  .loginLocals(function(req, res, done){
+    setTimeout(function(){
+      done(null, {title: 'Login'});
+    }, 200);
+  })
+  .authenticate(users.authenticate)
+  .registerUser(users.registerUser)
+  .getRegisterPath('/register')
+  .postRegisterPath('/register')
+  .registerView('register.jade')
+  .registerLocals( function (req, res, done) {
+    setTimeout( function () {
+      done(null, {
+        title: 'Register'
+      });
+    }, 200);
+  })
+  .validateRegistration(users.validateRegistration)
+  .loginSuccessRedirect('/')
+  .registerSuccessRedirect('/');
+  ;
+
+everyauth.everymodule.userPkey
+everyauth.everymodule.findUserById(users.findUserByID);
 
 var app = express();
 
@@ -27,6 +60,12 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(express.cookieParser(config.Express.cookieSecret));
   app.use(express.session());
+  app.use(everyauth.middleware(app));
+  app.use(function(req, res, next){
+    // make user accessible from view.
+    res.locals.user = req.user;
+    next();
+  });
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
 });
@@ -36,11 +75,6 @@ app.configure('development', function(){
 });
 
 app.get('/', routes.index);
-app.get('/login', function(req, res){
-  res.render('login.jade', {title: 'login'});
-});
-app.get('/auth', auth.auth);
-app.get('/users', user.list);
 
 // tasks
 app.get('/task', tasks.show);

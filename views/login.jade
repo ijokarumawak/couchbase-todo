@@ -1,4 +1,30 @@
 extends layout
 
+block navi
+  div(class='navbar')
+    div(class='navbar-inner')
+      ul(class="nav")
+        li
+          a(href='/') Home
+        li(class="active")
+          a(href='#') Login
+
 block content
-  a(class="btn btn-large btn-primary",href="/auth") Login with Google Account
+  h2 Login
+  - if ('undefined' !== typeof errors && errors.length)
+    ul#errors
+      - each error in errors
+        li.error= error
+  form(action='/login', method='post')
+    #login
+      label(for=everyauth.password.loginFormFieldName) User ID
+      input(type='text', name=everyauth.password.loginFormFieldName, value=login)
+    #password
+      label(for=everyauth.password.passwordFormFieldName) Password
+      input(type='password', name=everyauth.password.passwordFormFieldName)
+    #submit
+      button(type='submit', class='btn btn-primary') Login
+  p or
+  a(class="btn btn-primary", href="/register") Register
+
+  a(class="btn btn-primary",href="/auth") Login with Google Account

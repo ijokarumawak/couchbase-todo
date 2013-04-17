@@ -6,6 +6,14 @@
   color: #999;
 }
 
+.bg-transparent {
+  background-color: transparent;
+}
+
+.no-margin {
+  margin: 0px;
+}
+
 .modal {
   /* new custom width */
   width: 600px;
