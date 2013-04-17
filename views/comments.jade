@@ -6,7 +6,8 @@ div#comments(class="container")
       div(class='commentContainer')
         != marked(comment['body'])
         div(class='row')
-          div(class='span3')
-            span(class='weak')= moment(comment.createdAt).fromNow()
-          div(class='span2 offset7')
+          div(class='span5')
+            span= comment.by
+            span(class='weak')= ' - ' + moment(comment.createdAt).fromNow()
+          div(class='span2 offset5')
             a(href="#", onclick="editComment(#{comment.id}); return false;") Edit

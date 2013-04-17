@@ -10,6 +10,7 @@ function reqToTask(req, task) {
   if(!task) task = {type: 'task'};
   var names = ['project', 'subject', 'status', 'desc',
         'startDate', 'startTime', 'endDate', 'endTime', 'body'];
+  if(req.user) task.savedBy = req.user.id;
   names.forEach(function(name){
     var p = req.param(name);
     if(p) task[name] = p;
@@ -116,6 +117,7 @@ exports.put = function(id, task, next){
         task.revs.unshift({
           rev: currentRev,
           status: currentTask.status,
+          savedBy: currentTask.savedBy,
           timestamp: currentTask.updatedAt ?
             currentTask.updatedAt : currentTask.createdAt});
         var revID = id + '-' + currentRev

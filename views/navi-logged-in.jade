@@ -12,10 +12,11 @@ div(class='navbar')
           input#searchQuery(type="text", name="q", class="search-query")
         li
           a(href="#", onclick="$('#searchForm')[0].submit()") Search
-        li(style='padding-top: 2px')
-          ul(class='breadcrumb bg-transparent no-margin')
-            li
-              a(href="#")= user.id
-              span(class='divider') /
-            li
-              a(href="/logout") Logout
+        if user
+          li(style='padding-top: 2px')
+            ul(class='breadcrumb bg-transparent no-margin')
+              li
+                a(href="#")= user.id
+                span(class='divider') /
+              li
+                a(href="/logout") Logout

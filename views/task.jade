@@ -26,6 +26,9 @@ block content
         br
         strong= 'Updated at: '
         span= task.updatedAt ? moment(task.updatedAt).fromNow() : '-'
+        br
+        strong= 'Saved by: '
+        span= task.savedBy ? task.savedBy : '-'
     div(class="btn-group")
       a(class="btn btn-primary", href="/edit-task?id=" + id) Edit Task
       a(class="btn btn-primary", href="#addCommentDialog", data-toggle="modal") Add Comment
@@ -44,6 +47,7 @@ block content
               mixin statusLabel(rev.status)
             td= moment(rev.timestamp).format('YYYY-MM-DD HH:mm:ss')
             td= moment(rev.timestamp).fromNow()
+            td= rev.savedBy
   div#comments
   div#addCommentDialog(class="modal hide fade", tabindex="-1", role="dialog")
     div(class="modal-header")
@@ -57,11 +61,13 @@ block content
       a(href="#addCommentDialog", class="btn", data-toggle="modal") Cancel
 block script
   mixin markdownInputScript(['commentBody'])
+  - var userId = user ? user.id : null;
   script
     function addComment() {
       var comment = {
         body: $('#wmd-input_commentBody').val(),
-        task: #{id}
+        task: #{id},
+        by: '#{userId}'
       }
       var onSuccess = function(res) { 
         $('#addCommentDialog').modal('hide');
