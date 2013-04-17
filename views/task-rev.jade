@@ -16,19 +16,19 @@ block content
         a(href="/task?id=" + id)= id
         span(class='divider') /
       li(class='active')= task.rev
-  div(class='row')
-    div(class='alert alert-info span4')
-      strong= 'Start Date: '
-      span= task.startDate ? task.startDate : '-'
-      br
-      strong= 'End Date: '
-      span= task.endDate ? task.endDate : '-'
-    div(class='alert alert-info span4')
-      strong= 'Created at: '
-      span= task.createdAt ? moment(task.createdAt).fromNow() : '-'
-      br
-      strong= 'Updated at: '
-      span= task.updatedAt ? moment(task.updatedAt).fromNow() : '-'
+    div(class='row')
+      div(class='alert alert-info span4')
+        strong= 'Start Date: '
+        span= task.startDate ? task.startDate : '-'
+        br
+        strong= 'End Date: '
+        span= task.endDate ? task.endDate : '-'
+      div(class='alert alert-info span4')
+        strong= 'Created at: '
+        span= task.createdAt ? moment(task.createdAt).fromNow() : '-'
+        br
+        strong= 'Updated at: '
+        span= task.updatedAt ? moment(task.updatedAt).fromNow() : '-'
   div
     if task.body
       != marked(task.body)

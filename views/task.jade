@@ -13,22 +13,22 @@ block content
         a(href="/project?id=" + task.project)= task.project
         span(class='divider') /
       li(class='active')= id
+    div(class='row')
+      div(class='alert alert-info span4')
+        strong= 'Start Date: '
+        span= task.startDate ? task.startDate : '-'
+        br
+        strong= 'End Date: '
+        span= task.endDate ? task.endDate : '-'
+      div(class='alert alert-info span4')
+        strong= 'Created at: '
+        span= task.createdAt ? moment(task.createdAt).fromNow() : '-'
+        br
+        strong= 'Updated at: '
+        span= task.updatedAt ? moment(task.updatedAt).fromNow() : '-'
     div(class="btn-group")
       a(class="btn btn-primary", href="/edit-task?id=" + id) Edit Task
       a(class="btn btn-primary", href="#addCommentDialog", data-toggle="modal") Add Comment
-  div(class='row')
-    div(class='alert alert-info span4')
-      strong= 'Start Date: '
-      span= task.startDate ? task.startDate : '-'
-      br
-      strong= 'End Date: '
-      span= task.endDate ? task.endDate : '-'
-    div(class='alert alert-info span4')
-      strong= 'Created at: '
-      span= task.createdAt ? moment(task.createdAt).fromNow() : '-'
-      br
-      strong= 'Updated at: '
-      span= task.updatedAt ? moment(task.updatedAt).fromNow() : '-'
   div
     if task.body
       != marked(task.body)

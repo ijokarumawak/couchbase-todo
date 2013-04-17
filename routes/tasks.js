@@ -192,15 +192,15 @@ exports.edit = function(req, res){
 
 exports.show = function(req, res){
   var id = req.param('id');
-  var rev = -1;
-  if(id.indexOf('-') > -1) {
-    var ids = id.split('-');
-    id = ids[0];
-    rev = ids[1];
-  }
   db.findByID(id, function(err, task){
     if(rc.isErr(err, res)
        || rc.isNotFound(id, task, res)) return;
+    var rev = -1;
+    if(id.indexOf('-') > -1) {
+      var ids = id.split('-');
+      id = ids[0];
+      rev = ids[1];
+    }
     var values = {title: 'task:' + id, marked: marked, moment: moment,
      id: id, task: task};
 
