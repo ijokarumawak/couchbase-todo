@@ -16,14 +16,34 @@ block content
     div(class="btn-group")
       a(class="btn btn-primary", href="/edit-task?id=" + id) Edit Task
       a(class="btn btn-primary", href="#addCommentDialog", data-toggle="modal") Add Comment
-  div(class='alert alert-info')
-    strong= 'Start Date: '
-    span= task.startDate
-    strong= ' | End Date: '
-    span= task.endDate
+  div(class='row')
+    div(class='alert alert-info span4')
+      strong= 'Start Date: '
+      span= task.startDate ? task.startDate : '-'
+      br
+      strong= 'End Date: '
+      span= task.endDate ? task.endDate : '-'
+    div(class='alert alert-info span4')
+      strong= 'Created at: '
+      span= task.createdAt ? moment(task.createdAt).fromNow() : '-'
+      br
+      strong= 'Updated at: '
+      span= task.updatedAt ? moment(task.updatedAt).fromNow() : '-'
   div
     if task.body
       != marked(task.body)
+  div
+    if  task.revs && task.revs.length > 0
+      h4(class="weak") #{task.revs.length} revisions
+      table(class="data")
+        - each rev in task.revs
+          tr
+            td
+              a(href="/task?id=#{id}-#{rev.rev}")=rev.rev
+            td
+              mixin statusLabel(rev.status)
+            td= moment(rev.timestamp).format('YYYY-MM-DD HH:mm:ss')
+            td= moment(rev.timestamp).fromNow()
   div#comments
   div#addCommentDialog(class="modal hide fade", tabindex="-1", role="dialog")
     div(class="modal-header")
