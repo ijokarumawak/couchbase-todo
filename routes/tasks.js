@@ -14,6 +14,7 @@ function reqToTask(req, task) {
   names.forEach(function(name){
     var p = req.param(name);
     if(p) task[name] = p;
+    else delete(task[name]);
   });
   return task;
 }

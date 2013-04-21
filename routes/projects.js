@@ -11,6 +11,7 @@ function reqToProject(req, project) {
   names.forEach(function(name){
     var p = req.param(name);
     if(p) project[name] = p;
+    else delete(project[name]);
   });
   return project;
 }
