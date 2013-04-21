@@ -18,10 +18,11 @@ exports.searchAll = function(queryString, callback){
       "size":50
     }
   };
-  
-  es.search('todo', 'couchbaseDocument', q, function(err, data){
+
+  es.search(config.ElasticSearch.index, 'couchbaseDocument', q, function(err, data){
     if(err) {
       callback(err);
+      return;
     }
     var res = JSON.parse(data);
     var hits = new Array();

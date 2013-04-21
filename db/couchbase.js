@@ -154,7 +154,7 @@ DataHandler.prototype.uploadDesignDoc = function(name, callback){
       callback(err);
       return;
     }
-    cb.setDesignDoc(name, data, function(err) {
+    cb.createDesignDoc(name, data, function(err) {
       if(err) {
         callback(err);
         return;
