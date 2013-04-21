@@ -3,6 +3,7 @@ var config = require('config');
 var async = require('async');
 var Memcached = require('memcached');
 var memcached = new Memcached(config.Memcached.host);
+var fs = require('fs');
 
 DataHandler = function(){};
 
@@ -78,7 +79,7 @@ DataHandler.prototype.findProjects = function(callback) {
 
 DataHandler.prototype.findTasksByProject = function(projectId, callback) {
   var q = {'key': projectId, 'stale': false};
-  this.cb.view('dev_task', 'project', q, function(err, res){
+  this.cb.view('dev_task', 'by_project', q, function(err, res){
     if(err){
       callback(err);
       return;
@@ -123,6 +124,42 @@ DataHandler.prototype.findComments = function(taskID, callback) {
         return;
       }
       callback(null, comments);
+    });
+  });
+}
+
+DataHandler.prototype.saveDesignDoc = function(name, callback){
+  var file = config.Couchbase.designDocs.localDir + '/' + name + '.json';
+  this.cb.getDesignDoc(name, function(err, data){
+    if(err) {
+      callback(err);
+      return;
+    }
+    fs.writeFile(file, JSON.stringify(data), function(err){
+      if(err) {
+        callback(err);
+        return;
+      }
+      callback();
+    });
+  });
+}
+
+DataHandler.prototype.uploadDesignDoc = function(name, callback){
+  var file = config.Couchbase.designDocs.localDir + '/' + name + '.json';
+  var cb = this.cb;
+  fs.readFile(file, 'utf-8', function(err, data){
+    console.log(data);
+    if(err){
+      callback(err);
+      return;
+    }
+    cb.setDesignDoc(name, data, function(err) {
+      if(err) {
+        callback(err);
+        return;
+      }
+      callback();
     });
   });
 }

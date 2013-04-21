@@ -1,0 +1,1 @@
+{"views":{"by_project":{"map":"function (doc, meta) {\n  if(\"task\" === doc.type) {\n    var key = doc.project ? doc.project : 'none';\n    emit(key, {\n      subject: doc.subject,\n      status: doc.status ? doc.status : 'open'\n    });\n  }\n}"}}}

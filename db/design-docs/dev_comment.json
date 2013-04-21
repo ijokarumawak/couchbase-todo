@@ -1,0 +1,1 @@
+{"views":{"by_task":{"map":"function (doc, meta) {\n  if(doc.type == 'comment')\n    emit([doc.task, doc.createdAt], null);\n}"}}}

@@ -1,0 +1,1 @@
+{"views":{"by_type":{"map":"function (doc, meta) {\n  if(doc.type === \"project\")\n    emit(doc.type, doc.name);\n  if(doc.type === \"note\")\n    emit(doc.type, doc.name);\n  if(doc.type === \"task\")\n    emit(doc.type, doc.subject);\n  if(doc.type === \"comment\")\n    emit(doc.type, null);\n}"}}}
