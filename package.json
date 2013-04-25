@@ -17,6 +17,7 @@
     "pagedown": "*",
     "async": "*",
     "moment": "*",
-    "elasticsearchclient": "*"
+    "elasticsearchclient": "*",
+    "bcrypt": "*"
   }
 }

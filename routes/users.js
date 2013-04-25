@@ -3,6 +3,7 @@ var util = require('util'),
     moment = require('moment'),
     rc = require('./response-check.js'),
     async = require('async'),
+    bcrypt = require('bcrypt'),
     DataHandler = require('../db/couchbase.js').DataHandler;
 var db = new DataHandler();
 
@@ -31,6 +32,10 @@ exports.validateRegistration = function(user, errors){
 exports.registerUser = function(user) {
   var userID = user[this.loginKey()];
   var promise = this.Promise();
+  var password = user.password;
+  delete user.password;
+  var salt = bcrypt.genSaltSync();
+  user.hash = bcrypt.hashSync(password, salt);
  
   console.log('Adding new user:' + userID); 
   createUser(userID, user, function(err, createdUser){
@@ -56,8 +61,14 @@ exports.authenticate = function(login, password) {
     exports.findUserByID(login, function(err, user){
       if (err) return promise.fulfill(err);
       if (!user) return promise.fulfill(['Login failed']);
-      if (user.password !== password) return promise.fulfill(['Login failed.']);
-      promise.fulfill(user);
+      bcrypt.compare(password, user.hash, function(err, didSucceed){
+        if(err){
+          return promise.fail(err);
+        }
+        if(didSucceed) return promise.fulfill(user);
+        errors.push('Login failed');
+        return promise.fulfill(errors);
+      })
     });
     return promise;
 }
