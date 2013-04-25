@@ -61,3 +61,13 @@ exports.authenticate = function(login, password) {
     });
     return promise;
 }
+
+exports.checkAuth = function(req, res, next){
+  if(!req.user){
+    res.send('You are not authorized to view this page.', 403);
+    return;
+  }
+  // Invalidate cache.
+  res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+  next();
+};

@@ -5,7 +5,6 @@
 
 var express = require('express'),
   routes = require('./routes'),
-  user = require('./routes/user'),
   auth = require('./routes/auth'),
   tasks = require('./routes/tasks'),
   projects = require('./routes/projects'),
@@ -42,10 +41,9 @@ everyauth.password
   })
   .validateRegistration(users.validateRegistration)
   .loginSuccessRedirect('/')
-  .registerSuccessRedirect('/');
+  .registerSuccessRedirect('/')
   ;
 
-everyauth.everymodule.userPkey
 everyauth.everymodule.findUserById(users.findUserByID);
 
 var app = express();
@@ -77,28 +75,28 @@ app.configure('development', function(){
 app.get('/', routes.index);
 
 // tasks
-app.get('/task', tasks.show);
-app.get('/add-task', tasks.showAddPage);
-app.get('/edit-task', tasks.showEditPage);
-app.post('/add-task', tasks.add);
-app.post('/edit-task', tasks.edit);
+app.get('/task', users.checkAuth, tasks.show);
+app.get('/add-task', users.checkAuth, tasks.showAddPage);
+app.get('/edit-task', users.checkAuth, tasks.showEditPage);
+app.post('/add-task', users.checkAuth, tasks.add);
+app.post('/edit-task', users.checkAuth, tasks.edit);
 
 // projects
-app.get('/project', projects.show);
-app.get('/add-project', projects.showAddPage);
-app.get('/edit-project', projects.showEditPage);
-app.post('/add-project', projects.add);
-app.post('/edit-project', projects.edit);
+app.get('/project', users.checkAuth, projects.show);
+app.get('/add-project', users.checkAuth, projects.showAddPage);
+app.get('/edit-project', users.checkAuth, projects.showEditPage);
+app.post('/add-project', users.checkAuth, projects.add);
+app.post('/edit-project', users.checkAuth, projects.edit);
 
 // comments
-app.post('/tasks/:taskID/comments/', comments.post);
-app.get('/tasks/:taskID/comments/', comments.findComments);
-app.get('/tasks/:taskID/comments/:commentID', comments.findByID);
-app.put('/tasks/:taskID/comments/:commentID', comments.put);
+app.post('/tasks/:taskID/comments/', users.checkAuth, comments.post);
+app.get('/tasks/:taskID/comments/', users.checkAuth, comments.findComments);
+app.get('/tasks/:taskID/comments/:commentID', users.checkAuth, comments.findByID);
+app.put('/tasks/:taskID/comments/:commentID', users.checkAuth, comments.put);
 
 // search
-app.post('/search/', search.post);
-app.get('/search-result', search.showSearchResult);
+app.post('/search/', users.checkAuth, search.post);
+app.get('/search-result', users.checkAuth, search.showSearchResult);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
