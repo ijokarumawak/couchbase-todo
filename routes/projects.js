@@ -82,6 +82,7 @@ exports.show = function(req, res){
   var id = req.param('id');
   var findTasks = function(project) {
     db.findTasksByProject(id, function(err, tasks){
+      if(rc.isErr(err, res)) return;
       res.render('project.jade', {
         title: 'project:' + id, marked: marked,
         id: id, project: project, tasks: tasks

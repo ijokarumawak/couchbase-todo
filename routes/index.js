@@ -17,6 +17,7 @@ var db = new DataHandler();
 
 exports.index = function(req, res){
   db.findProjects(function(err, projects){
+    if(rc.isErr(err, res)) return;
     console.log("projects=" + projects);
     res.render('index', {title: 'Todo Management', projects: projects});
   });
