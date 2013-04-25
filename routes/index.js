@@ -1,10 +1,4 @@
-var GoogleCalendar = require('google-calendar');
 var config = require('config');
-var googleCalendar = new GoogleCalendar.GoogleCalendar(
-  config.GoogleAPI.clientID,
-  config.GoogleAPI.clientSecret,
-  config.GoogleAPI.redirectURI
-);
 var util = require('util'),
     marked = require('marked'),
     rc = require('./response-check.js'),

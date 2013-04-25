@@ -5,7 +5,6 @@
 
 var express = require('express'),
   routes = require('./routes'),
-  auth = require('./routes/auth'),
   tasks = require('./routes/tasks'),
   projects = require('./routes/projects'),
   comments = require('./routes/comments'),
