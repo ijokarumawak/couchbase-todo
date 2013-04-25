@@ -39,6 +39,8 @@ describe('projects', function(){
         if(!check(function(){
           assert.equal(locals.project.type, 'project',
             'should set type automatically');
+          assert(locals.project.createdAt, 'should set createdAt automatically');
+          assert(!locals.project.updatedAt, 'should not set createdAt automatically');
         }, done)) return;
         done();
       });
@@ -47,7 +49,7 @@ describe('projects', function(){
 
   describe('#edit()', function() {
     it('should update an existing project without error.', function(done) {
-      var param = {id: 'UT', desc: 'Updated description.'};
+      var param = {id: 'UT', name: 'Unit test project', desc: 'Updated description.'};
       var req = {param: function(name){return param[name]}};
       var res = {redirect: function(path){
         console.log('redirect is called.');
@@ -59,12 +61,13 @@ describe('projects', function(){
       }};
       projects.edit(req, res);
     });
-    it('should update the specified fields only.', function(done) {
+    it('should update the input fields only.', function(done) {
       projects.get('UT', function(err, project){
         if(err) throw err;
         if(!check(function(){
           assert.equal(project.name, 'Unit test project');
           assert.equal(project.desc, 'Updated description.');
+          assert(project.createdAt < project.updatedAt, 'Update date');
         }, done)) return;
         done();
       });

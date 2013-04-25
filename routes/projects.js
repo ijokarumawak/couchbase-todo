@@ -32,6 +32,11 @@ exports.showEditPage = function(req, res){
 
 exports.put = function(id, _project, next){
   _project.type = 'project';
+  if(typeof(_project.createdAt) === 'undefined'){
+    _project.createdAt = new Date().getTime();
+  } else {
+    _project.updatedAt = new Date().getTime();
+  }
   var locals = {project: _project};
   async.series({
     save: function(callback){

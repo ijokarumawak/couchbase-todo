@@ -104,7 +104,9 @@ describe('tasks', function(){
 
   describe('#edit()', function() {
     it('should update an existing task without error.', function(done) {
-      var param = {id: publishedID, desc: 'Updated description.'};
+      var param = {id: publishedID,
+        subject: 'Belongs to a project.',
+        desc: 'Updated description.'};
       var req = {param: function(name){return param[name]}};
       var res = {redirect: function(path){
         console.log('redirect is called.');
