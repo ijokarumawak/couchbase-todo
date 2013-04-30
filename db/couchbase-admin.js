@@ -1,5 +1,6 @@
 var config = require('config');
 var fs = require('fs');
+var projects = require('../routes/projects.js');
 var DataHandler = require('./couchbase.js').DataHandler;
 var db = new DataHandler();
 
@@ -9,7 +10,9 @@ process.on('exit', function(){
 });
 process.on('uncaughtException', function(err){
   console.error(err);
-  usage();
+  setTimeout(function(){
+    usage();
+  }, 2000);
 });
 
 var commands = {};
@@ -30,11 +33,21 @@ commands.uploadDesignDoc = function(args) {
   });
 }
 
+commands.deleteProject = function(args) {
+  var projectID = args[0];
+  projects.delete(projectID, function(err){
+    if(err) throw err;
+    process.exit();
+  });
+}
+
 function usage(){
   console.log('node db/couchbase-admin.js command [options]',
   '\navailable commands and its options:',
   '\n  saveDesignDoc designDocName',
-  '\n  uploadDesignDoc designDocName');
+  '\n  uploadDesignDoc designDocName',
+  '\n  deleteProject projectName'
+  );
   exitCode = 1;
 }
 

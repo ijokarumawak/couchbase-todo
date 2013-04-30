@@ -160,14 +160,20 @@ exports.delete = function(id, next){
         deleteIDs.push(id + '-' + r.rev);
       });
     }
-    async.each(deleteIDs, function(deleteID, callback){
-      db.remove(deleteID, function(err){
-        if(rc.err(err, callback)) return;
-        callback();
-      });
-    }, function(err){
+    db.findComments(id, function(err, comments){
       if(rc.err(err, next)) return;
-      next(null);
+      comments.forEach(function(comment){
+        deleteIDs.push(comment.id);
+      });
+      async.each(deleteIDs, function(deleteID, callback){
+        db.remove(deleteID, function(err){
+          if(rc.err(err, callback)) return;
+          callback();
+        });
+      }, function(err){
+        if(rc.err(err, next)) return;
+        next(null);
+      });
     });
   });
 }

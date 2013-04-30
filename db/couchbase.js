@@ -38,7 +38,7 @@ DataHandler.prototype.remove = function(id, callback) {
 
 DataHandler.prototype.findByID = function(id, callback) {
   // this.cb.get(id.toString(), function(err, doc){
-  console.log('trying to get the data using memcached');
+  console.log('trying to get the data using memcached:' + id);
   memcached.get(id.toString(), function(err, doc){
     console.log('err=' + err);
     console.log('doc=' + doc);

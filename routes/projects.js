@@ -2,6 +2,7 @@ var util = require('util'),
     marked = require('marked'),
     async = require('async'),
     rc = require('./response-check.js'),
+    _tasks = require('./tasks.js'),
     DataHandler = require('../db/couchbase.js').DataHandler;
 var db = new DataHandler();
 
@@ -56,6 +57,25 @@ exports.get = function(id, next){
   db.findByID(id, function(err, doc){
     if(rc.err(err, next)) return;
     next(null, doc);
+  });
+}
+
+exports.delete = function(id, next){
+  db.remove(id, function(err){
+    if(rc.err(err, next)) return;
+    db.findTasksByProject(id, function(err, tasks){
+      if(rc.err(err, next)) return;
+      async.each(tasks, function(task, callback){
+        _tasks.delete(task.id.toString(), function(err){
+          console.log('deleting task:' + task.id);
+          if(rc.err(err, callback)) return;
+          callback();
+        });
+      }, function(err){
+        if(rc.err(err, next)) return;
+        next(null);
+      });
+    });
   });
 }
 
