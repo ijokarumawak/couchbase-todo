@@ -1,8 +1,6 @@
 var driver = require('couchbase');
 var config = require('config');
 var async = require('async');
-var Memcached = require('memcached');
-var memcached = new Memcached(config.Memcached.host);
 var fs = require('fs');
 
 DataHandler = function(){};
@@ -37,13 +35,11 @@ DataHandler.prototype.remove = function(id, callback) {
 };
 
 DataHandler.prototype.findByID = function(id, callback) {
-  // this.cb.get(id.toString(), function(err, doc){
-  console.log('trying to get the data using memcached:' + id);
-  memcached.get(id.toString(), function(err, doc){
+  this.cb.get(id.toString(), function(err, doc){
     console.log('err=' + err);
     console.log('doc=' + doc);
     if(err) {
-      if(err.code == 13) {
+      if(err.code == driver.errors.keyNotFound) {
         console.log('document was not found: ' + id);
         callback(null, null);
         return;
@@ -53,9 +49,7 @@ DataHandler.prototype.findByID = function(id, callback) {
         return;
       }
     }
-    // memcached client returns false as a doc if the key doesn't exist.
-    if(doc) callback(null, JSON.parse(doc));
-    else callback(null, null);
+    callback(null, doc);
   });
 }
 
@@ -99,21 +93,20 @@ DataHandler.prototype.findComments = function(taskID, callback) {
     'startkey' : [Number(taskID), "X"],
     'endkey' : [Number(taskID)]
   };
-  console.log(JSON.stringify(q));
-  this.cb.view('dev_comment', 'by_task', q, function(err, res){
+  var cb = this.cb;
+  cb.view('dev_comment', 'by_task', q, function(err, res){
     if(err){
       callback(err);
       return;
     }
     var comments = new Array();
     async.eachIndex(res, function(r, i, callback) {
-      // Retrieve each comment asynchronouslly.
-      memcached.get(r.id, function(err, doc){
+      cb.get(r.id, function(err, doc){
         if(err) {
           callback(err);
           return;
         }
-        comments[i] = JSON.parse(doc);
+        comments[i] = doc;
         comments[i].id = r.id;
         callback();
       });
@@ -154,7 +147,7 @@ DataHandler.prototype.uploadDesignDoc = function(name, callback){
       callback(err);
       return;
     }
-    cb.createDesignDoc(name, data, function(err) {
+    cb.setDesignDoc(name, data, function(err) {
       if(err) {
         callback(err);
         return;
