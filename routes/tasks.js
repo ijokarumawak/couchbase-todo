@@ -171,8 +171,7 @@ exports.delete = function(id, next){
           callback();
         });
       }, function(err){
-        if(rc.err(err, next)) return;
-        next(null);
+        next(err);
       });
     });
   });

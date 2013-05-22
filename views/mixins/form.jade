@@ -8,9 +8,14 @@ mixin readonlyField(model, type, name, label)
     label(for=name) #{label}:
     input(id=name, type=type, name=name, value=model[name], readonly)
 
-mixin largeField(model, type, name, label)
+mixin largeField(model, type, name, label, desc)
   div
-    label(for=name) #{label}:
+    label(for=name) 
+     span #{label}
+     - if(desc)
+         span(class='weak')  (#{desc}):
+       else
+         span :
     input(id=name, type=type, name=name, value=model[name], class="input-xxlarge", spellcheck="true")
 
 mixin textareaField(model, name, label)

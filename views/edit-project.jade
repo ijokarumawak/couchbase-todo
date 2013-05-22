@@ -6,6 +6,8 @@ block content
     mixin readonlyField({id: id}, 'text', 'id', 'ID')
     mixin field(project, 'text', 'name', 'Name')
     mixin largeField(project, 'text', 'desc', 'Description')
+    mixin largeField(project, 'text', 'administrators', 'Administrators', 'comma seperated user IDs')
+    mixin largeField(project, 'text', 'collaborators', 'Collaborators', 'comma seperated user IDs')
     mixin markdownInput(project, 'body', 'Body')
     mixin submitButtons
 block script

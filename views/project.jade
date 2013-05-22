@@ -9,7 +9,9 @@ block content
       p= project.desc
       div(class="btn-group")
         a(class="btn btn-primary", href="/add-task?project=" + id) Add Task to this project
-        a(class="btn btn-primary", href="/edit-project?id=" + id) Edit project
+        // Let any user edit a project if it doesn't have any administrators yet.
+        - if(!project.administrators || project.administrators.indexOf(user.id) > -1)
+            a(class="btn btn-primary", href="/edit-project?id=" + id) Edit project
     div
       if project.body
         div(class='well')

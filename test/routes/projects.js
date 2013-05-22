@@ -49,7 +49,10 @@ describe('projects', function(){
 
   describe('#edit()', function() {
     it('should update an existing project without error.', function(done) {
-      var param = {id: 'UT', name: 'Unit test project', desc: 'Updated description.'};
+      var param = {id: 'UT', name: 'Unit test project',
+        desc: 'Updated description.',
+        administrators: 'foo, bar',
+        collaborators: 'baz'};
       var req = {param: function(name){return param[name]}};
       var res = {redirect: function(path){
         console.log('redirect is called.');
@@ -68,6 +71,12 @@ describe('projects', function(){
           assert.equal(project.name, 'Unit test project');
           assert.equal(project.desc, 'Updated description.');
           assert(project.createdAt < project.updatedAt, 'Update date');
+          assert(project.administrators, 'Administrators should be set');
+          assert.equal(project.administrators.length, 2);
+          assert.deepEqual(project.administrators, ['foo', 'bar']);
+          assert(project.collaborators, 'Collaborators should be set');
+          assert.equal(project.collaborators.length, 1);
+          assert.deepEqual(project.collaborators, ['baz']);
         }, done)) return;
         done();
       });

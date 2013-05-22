@@ -133,8 +133,7 @@ describe('tasks', function(){
   after(function(done){
     async.each(deleteIDs, function(id, callback) {
       tasks.delete(id, function(err){
-        if(err) throw err;
-        callback();
+        callback(err);
       });
     }, function(err){
       done(err);
