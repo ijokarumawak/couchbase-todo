@@ -2,6 +2,7 @@ var util = require('util'),
     marked = require('marked'),
     moment = require('moment'),
     rc = require('./response-check.js'),
+    projects = require('./projects.js'),
     async = require('async'),
     DataHandler = require('../db/couchbase.js').DataHandler;
 var db = new DataHandler();
@@ -203,19 +204,22 @@ exports.show = function(req, res){
   db.findByID(id, function(err, task){
     if(rc.isErr(err, res)
        || rc.isNotFound(id, task, res)) return;
-    var rev = -1;
-    if(id.indexOf('-') > -1) {
-      var ids = id.split('-');
-      id = ids[0];
-      rev = ids[1];
-    }
-    var values = {title: 'task:' + id, marked: marked, moment: moment,
-     id: id, task: task};
+    projects.checkBrowsePrivilege(req.user, task.project,
+      res, function(project) {
+      var rev = -1;
+      if(id.indexOf('-') > -1) {
+        var ids = id.split('-');
+        id = ids[0];
+        rev = ids[1];
+      }
+      var values = {title: 'task:' + id, marked: marked, moment: moment,
+       id: id, task: task};
 
-    if(rev == -1){
-      res.render('task.jade', values);
-    } else {
-      res.render('task-rev.jade', values);
-    }
+      if(rev == -1){
+        res.render('task.jade', values);
+      } else {
+        res.render('task-rev.jade', values);
+      }
+    });
   });
 }

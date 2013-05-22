@@ -25,7 +25,7 @@ function reqToProject(req, project) {
         if(v)project[name].push(v.trim());
       });
     } else {
-      delete(p);
+      delete(project[name]);
     }
   });
 
@@ -37,6 +37,7 @@ exports.showAddPage = function(req, res){
 };
 
 function doNotHaveEditPrivilege(user, project, res){
+  if(!project) return false;
   if(project.administrators
     && project.administrators.indexOf(user.id) == -1) {
     res.send(403, 'You don\'t have privilege to edit this project.');
@@ -45,7 +46,9 @@ function doNotHaveEditPrivilege(user, project, res){
   return false;
 }
 
+// It might be better to use general callback structure instead of calling res.send directly here.
 function doNotHaveBrowsePrivilege(user, project, res){
+  if(!project) return false;
   // If there is no administrator, then everyone can see it.
   if(!project.administrators) return false;
   // An administrator can see it.
@@ -56,6 +59,18 @@ function doNotHaveBrowsePrivilege(user, project, res){
   res.send(403, 'You don\'t have privilege to browse this project.');
   return true;
 }
+exports.checkBrowsePrivilege = function(user, projectID, res, next){
+  if(!projectID) {
+    next();
+    return;
+  }
+  db.findByID(projectID, function(err, project){
+    if(rc.isErr(err, res)
+       || rc.isNotFound(projectID, project, res)) return;
+    if(doNotHaveBrowsePrivilege(user, project, res)) return;
+    next(project);
+  });
+};
 
 exports.showEditPage = function(req, res){
   var id = req.param('id');
@@ -153,9 +168,7 @@ exports.show = function(req, res){
     });
   }
   db.findByID(id, function(err, project){
-    if(rc.isErr(err, res))
-      return;
-
+    if(rc.isErr(err, res)) return;
     if(doNotHaveBrowsePrivilege(req.user, project, res)) return;
     findTasks(project);
   });

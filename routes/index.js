@@ -12,7 +12,16 @@ var db = new DataHandler();
 exports.index = function(req, res){
   db.findProjects(function(err, projects){
     if(rc.isErr(err, res)) return;
-    console.log("projects=" + projects);
-    res.render('index', {title: 'Todo Management', projects: projects});
+    var view = {title: 'Todo Management', projects: []};
+    if(!req.user){
+      res.render('index', view);
+      return;
+    }
+    projects.forEach(function(project){
+      if(project.summary.users
+        && project.summary.users.indexOf(req.user.id) == -1) return;
+      view.projects.push(project);
+    });
+    res.render('index', view);
   });
 };
