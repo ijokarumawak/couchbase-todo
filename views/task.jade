@@ -58,7 +58,7 @@ block content
       mixin markdownInput({}, 'commentBody', 'comment')
     div(class="modal-footer")
       a(href="#", class="btn btn-primary", onclick="addComment(); return false;") Submit
-      a(href="#addCommentDialog", class="btn", data-toggle="modal") Cancel
+      a(href="#", class="btn", onclick="closeCommentDialog(); return false;") Cancel
 block script
   mixin markdownInputScript(['commentBody'])
   - var userId = user ? user.id : null;
@@ -70,9 +70,7 @@ block script
         by: '#{userId}'
       }
       var onSuccess = function(res) { 
-        $('#addCommentDialog').modal('hide');
-        $('#wmd-input_commentBody').val('');
-        $('#commentID').val('');
+        closeCommentDialog();
         showComments();
         alert('Comment submitted.');
       }
@@ -92,6 +90,11 @@ block script
           success: onSuccess
         });
       }
+    }
+    function closeCommentDialog() {
+      $('#addCommentDialog').modal('hide');
+      $('#wmd-input_commentBody').val('');
+      $('#commentID').val('');
     }
     function showComments() {
       $.ajax({
