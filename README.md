@@ -24,9 +24,12 @@ A simple todo management application using Node.js and Couchbase Server.
 
     ElasticSearch:
       connection:
-        host; "localhost:
+        host; "localhost"
         port: 9200
-      indes: "todo"
+      index: "todo"
+
+## Create a bucket.
+Create a bucket named 'todo' via Couchbase Admin WEB console.
 
 ## Create design docs.
 
