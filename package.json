@@ -16,6 +16,7 @@
     "async": "*",
     "moment": "*",
     "elasticsearchclient": "*",
-    "bcrypt": "*"
+    "bcrypt": "*",
+    "everyauth": "*"
   }
 }
