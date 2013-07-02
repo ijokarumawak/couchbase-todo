@@ -10,8 +10,9 @@ A simple todo management application using Node.js and Couchbase Server.
     # Create a config file.
     vi config/default.yaml
 
-    # Define the Couchbase connection settings.
-    # Plus the ElasticSearch connection if you have one.
+    # Define Couchbase connection settings.
+    # And Express listen port and cookie secret.
+    # Plus ElasticSearch connection if you have one.
     Couchbase:
       connection:
         user: ""
@@ -22,11 +23,16 @@ A simple todo management application using Node.js and Couchbase Server.
       designDocs:
         localDir: ./db/design-docs
 
+    Express:
+      cookieSecret: "Your Secret Code"
+      port: 3000
+
     ElasticSearch:
       connection:
-        host; "localhost"
+        host: "localhost"
         port: 9200
       index: "todo"
+
 
 ## Create a bucket.
 Create a bucket named 'todo' via Couchbase Admin WEB console.
